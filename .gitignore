@@ -5,4 +5,6 @@ __pycache__/
 venv/
 models/*.eim
 .env
-app/data/product_cache.json
+python/data/product_cache.json
+# App Lab's per-app build/dependency cache (arduino-app-cli), not our own artifact.
+.cache/

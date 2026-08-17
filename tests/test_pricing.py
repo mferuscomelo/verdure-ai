@@ -1,6 +1,6 @@
 import pytest
 
-from app import pricing
+import pricing
 
 
 def test_apply_discount_no_discount_returns_base_price():

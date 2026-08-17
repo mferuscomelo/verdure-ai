@@ -1,11 +1,11 @@
 """Flow-agnostic pricing: base price + discount tier -> final price.
 
 Produce and packaged-goods flows each resolve their own discount tier from
-`app/config.py`, then both funnel through the same `apply_discount`.
+`config.py`, then both funnel through the same `apply_discount`.
 """
 from dataclasses import dataclass
 
-from app.config import (
+from config import (
     PACKAGED_DEFAULT_DISCOUNT_PCT,
     PACKAGED_DISCOUNT_TIERS,
     PRODUCE_DISCOUNT_BY_TIER,

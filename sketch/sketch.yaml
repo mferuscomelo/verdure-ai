@@ -1,0 +1,10 @@
+profiles:
+  default:
+    fqbn:
+    platforms:
+      - platform: arduino:zephyr
+    libraries:
+      - dependency: Adafruit BusIO (1.17.4)
+      - Adafruit NAU7802 Library (1.0.8)
+
+default_profile: default

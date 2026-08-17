@@ -7,8 +7,13 @@ from datetime import date
 
 import numpy as np
 
-from app import config, discount_codes, ocr, product_lookup, router
-from app.pricing import PriceResult, price_packaged
+import config
+import discount_codes
+import ocr
+import product_lookup
+import router
+from code_detector import CodeDetector
+from pricing import PriceResult, price_packaged
 
 
 @dataclass
@@ -55,8 +60,10 @@ def _price_packaged_item(image: np.ndarray) -> tuple[PriceResult, str]:
     return price, f"best-by {date_result.parsed_date.isoformat()}"
 
 
-def process_capture(image: np.ndarray, weight_grams: float | None = None) -> ScanResult:
-    routing = router.route_item(image)
+def process_capture(
+    image: np.ndarray, code_detector: CodeDetector, weight_grams: float | None = None
+) -> ScanResult:
+    routing = router.route_item(image, code_detector)
     if routing.flow == "produce":
         return _produce_stub_result()
 

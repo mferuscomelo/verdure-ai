@@ -10,8 +10,8 @@ from pathlib import Path
 import cv2
 import pytest
 
-from app.ocr import read_best_by_date
-from app.vision.barcode import decode_first_barcode
+from code_detector import decode_first_barcode
+from ocr import read_best_by_date
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "real_photos"
 MANIFEST = json.loads((FIXTURE_DIR / "manifest.json").read_text())

@@ -1,0 +1,7 @@
+opencv-python
+numpy
+rapidocr-onnxruntime
+Pillow  # used as qrcode's PNG backend
+pyzbar
+requests
+qrcode

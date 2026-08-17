@@ -1,6 +1,6 @@
 """Throwaway report script for the OCR feasibility spike.
 
-Runs app.ocr.read_best_by_date against every fixture in best_by_dates/,
+Runs ocr.read_best_by_date against every fixture in best_by_dates/,
 compares to the ground-truth manifest, and prints a pass-rate summary
 plus per-image timing.
 """
@@ -11,8 +11,8 @@ from pathlib import Path
 
 import cv2
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from app.ocr import extract_date, read_best_by_date  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
+from ocr import extract_date, read_best_by_date  # noqa: E402
 
 FIXTURE_DIR = Path(__file__).parent / "best_by_dates"
 manifest = json.loads((FIXTURE_DIR / "manifest.json").read_text())

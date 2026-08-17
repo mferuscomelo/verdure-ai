@@ -1,0 +1,32 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #10241a;
+  color: #eafff0;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+#phase { font-size: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; }
+#weight { font-size: 4rem; font-weight: bold; }
+#result { text-align: center; max-width: 32rem; }
+#result img { max-width: 220px; margin-top: 1rem; }
+
+.item-name { font-size: 1.75rem; margin: 0.25rem 0; }
+.price-row { font-size: 1.25rem; }
+.strike { text-decoration: line-through; opacity: 0.6; margin-right: 0.5rem; }
+.final { font-size: 2rem; font-weight: bold; color: #7CFC9C; }
+.reject { color: #ff8a80; font-size: 1.25rem; }
+.code { font-family: monospace; font-size: 1.5rem; letter-spacing: 0.2em; margin-top: 0.5rem; }
+.detail { opacity: 0.7; font-size: 0.9rem; margin-top: 0.25rem; }
+
+.error-message {
+  position: fixed;
+  bottom: 1rem;
+  color: #ff8a80;
+  font-size: 0.9rem;
+}

@@ -1,4 +1,4 @@
-from app import bridge_client
+import bridge_client
 
 
 def test_simulated_bridge_ramps_up_before_stabilizing():

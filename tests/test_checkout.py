@@ -5,7 +5,12 @@ from unittest.mock import patch
 import cv2
 import pytest
 
-from app import checkout, discount_codes, ocr, product_lookup, router
+import checkout
+import discount_codes
+import ocr
+import product_lookup
+import router
+from code_detector import SimulatedCodeDetector
 
 # No fixture image contains both a barcode and a printed date (they're
 # separate purpose-built sets), so packaged-flow tests mock routing/OCR to
@@ -27,16 +32,16 @@ def isolated_discount_registry(monkeypatch):
 
 
 def test_process_capture_produce_flow_returns_stub_result():
-    result = checkout.process_capture(ANY_IMAGE, weight_grams=180)
+    result = checkout.process_capture(ANY_IMAGE, SimulatedCodeDetector(), weight_grams=180)
 
     assert result.flow == "produce"
     assert not result.for_sale
     assert result.discount_code is None
 
 
-@patch("app.checkout.ocr.read_best_by_date")
-@patch("app.checkout.product_lookup.lookup_product")
-@patch("app.checkout.router.route_item")
+@patch("checkout.ocr.read_best_by_date")
+@patch("checkout.product_lookup.lookup_product")
+@patch("checkout.router.route_item")
 def test_process_capture_packaged_flow_applies_urgent_discount(mock_route, mock_lookup, mock_ocr):
     mock_route.return_value = router.RoutingResult(flow="packaged", barcode="070970474088")
     mock_lookup.return_value = SAMPLE_PRODUCT
@@ -44,7 +49,7 @@ def test_process_capture_packaged_flow_applies_urgent_discount(mock_route, mock_
         raw_text="", parsed_date=date.today() + timedelta(days=5), matched_substring="",
     )
 
-    result = checkout.process_capture(ANY_IMAGE)
+    result = checkout.process_capture(ANY_IMAGE, SimulatedCodeDetector())
 
     assert result.flow == "packaged"
     assert result.item_name == "Mike and Ike"
@@ -57,15 +62,15 @@ def test_process_capture_packaged_flow_applies_urgent_discount(mock_route, mock_
     assert redeemed["final_price"] == result.final_price
 
 
-@patch("app.checkout.ocr.read_best_by_date")
-@patch("app.checkout.product_lookup.lookup_product")
-@patch("app.checkout.router.route_item")
+@patch("checkout.ocr.read_best_by_date")
+@patch("checkout.product_lookup.lookup_product")
+@patch("checkout.router.route_item")
 def test_process_capture_packaged_flow_no_date_prices_at_full_value(mock_route, mock_lookup, mock_ocr):
     mock_route.return_value = router.RoutingResult(flow="packaged", barcode="070970474088")
     mock_lookup.return_value = SAMPLE_PRODUCT
     mock_ocr.return_value = ocr.DateExtractionResult(raw_text="", parsed_date=None, matched_substring=None)
 
-    result = checkout.process_capture(ANY_IMAGE)
+    result = checkout.process_capture(ANY_IMAGE, SimulatedCodeDetector())
 
     assert result.for_sale
     assert result.discount_pct == 0
@@ -73,9 +78,9 @@ def test_process_capture_packaged_flow_no_date_prices_at_full_value(mock_route, 
     assert result.discount_code is not None
 
 
-@patch("app.checkout.ocr.read_best_by_date")
-@patch("app.checkout.product_lookup.lookup_product")
-@patch("app.checkout.router.route_item")
+@patch("checkout.ocr.read_best_by_date")
+@patch("checkout.product_lookup.lookup_product")
+@patch("checkout.router.route_item")
 def test_process_capture_packaged_flow_expired_is_not_for_sale(mock_route, mock_lookup, mock_ocr):
     mock_route.return_value = router.RoutingResult(flow="packaged", barcode="070970474088")
     mock_lookup.return_value = SAMPLE_PRODUCT
@@ -83,7 +88,7 @@ def test_process_capture_packaged_flow_expired_is_not_for_sale(mock_route, mock_
         raw_text="", parsed_date=date.today() - timedelta(days=2), matched_substring="",
     )
 
-    result = checkout.process_capture(ANY_IMAGE)
+    result = checkout.process_capture(ANY_IMAGE, SimulatedCodeDetector())
 
     assert not result.for_sale
     assert result.final_price is None

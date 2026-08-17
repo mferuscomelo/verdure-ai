@@ -1,3 +1,7 @@
+# Laptop/dev-only: everything needed to run `pytest tests/` and the
+# tools/barcode_debug_server.py debug tool directly with plain python3.
+# On-device runtime deps for the App Lab container live in python/requirements.txt
+# (uv-installed there; no pytest/Flask needed on the board).
 opencv-python
 numpy
 rapidocr-onnxruntime

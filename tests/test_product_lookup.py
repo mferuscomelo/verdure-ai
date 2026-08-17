@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app import product_lookup
+import product_lookup
 
 SAMPLE_BARCODE = "070970474088"
 SAMPLE_OFF_RESPONSE = {
@@ -30,7 +30,7 @@ def _mock_response(json_body):
     return resp
 
 
-@patch("app.product_lookup.requests.get")
+@patch("product_lookup.requests.get")
 def test_lookup_cache_miss_then_hit(mock_get, isolated_cache):
     mock_get.return_value = _mock_response(SAMPLE_OFF_RESPONSE)
 
@@ -45,7 +45,7 @@ def test_lookup_cache_miss_then_hit(mock_get, isolated_cache):
     assert SAMPLE_BARCODE in json.loads(isolated_cache.read_text())
 
 
-@patch("app.product_lookup.requests.get")
+@patch("product_lookup.requests.get")
 def test_lookup_not_found_is_cached(mock_get, isolated_cache):
     mock_get.return_value = _mock_response({"status": 0})
 
@@ -57,7 +57,7 @@ def test_lookup_not_found_is_cached(mock_get, isolated_cache):
     mock_get.assert_called_once()
 
 
-@patch("app.product_lookup.requests.get")
+@patch("product_lookup.requests.get")
 def test_lookup_network_error_not_cached(mock_get, isolated_cache):
     mock_get.side_effect = product_lookup.requests.RequestException("boom")
 

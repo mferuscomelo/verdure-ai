@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from app import discount_codes
+import discount_codes
 
 
 @pytest.fixture(autouse=True)

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from app.vision.barcode import decode_first_barcode
+from code_detector import CodeDetector
 
 
 @dataclass
@@ -15,8 +15,8 @@ class RoutingResult:
     barcode: str | None
 
 
-def route_item(image: np.ndarray) -> RoutingResult:
-    barcode = decode_first_barcode(image)
+def route_item(image: np.ndarray, code_detector: CodeDetector) -> RoutingResult:
+    barcode = code_detector.get_current_detection(image)
     if barcode is not None:
         return RoutingResult(flow="packaged", barcode=barcode.value)
     return RoutingResult(flow="produce", barcode=None)

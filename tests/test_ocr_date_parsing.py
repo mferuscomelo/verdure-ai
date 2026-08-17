@@ -5,7 +5,7 @@ from pathlib import Path
 import cv2
 import pytest
 
-from app.ocr import extract_date, read_best_by_date
+from ocr import extract_date, read_best_by_date
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "best_by_dates"
 MANIFEST = json.loads((FIXTURE_DIR / "manifest.json").read_text())
