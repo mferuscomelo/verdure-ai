@@ -1,0 +1,9 @@
+opencv-python
+numpy
+rapidocr-onnxruntime
+pytest
+Pillow  # used by tests/fixtures/generate_synthetic_dates.py and as qrcode's PNG backend
+pyzbar
+Flask
+requests
+qrcode
