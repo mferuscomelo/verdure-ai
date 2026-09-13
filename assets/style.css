@@ -1,0 +1,245 @@
+:root {
+  --bg: #0b1f15;
+  --bg-soft: #11301f;
+  --ink: #eafff0;
+  --ink-dim: rgba(234, 255, 240, 0.62);
+  --card: #f7fbf5;
+  --card-ink: #12271a;
+  --card-dim: #5d7266;
+  --accent: #35d07f;
+  --accent-deep: #0f7a45;
+  --warn: #c2410c;
+  --reject: #b4231f;
+  --rule: rgba(234, 255, 240, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(120% 80% at 50% 0%, #16402a 0%, transparent 60%), var(--bg);
+  color: var(--ink);
+  margin: 0;
+  min-height: 100vh;
+}
+
+.kiosk {
+  min-height: 100vh;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.75rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* --- brand ------------------------------------------------------------ */
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.brand__mark {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.brand__mark::before {
+  content: "";
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.5rem;
+  border-radius: 50% 0 50% 50%;
+  background: var(--accent);
+}
+
+.brand__tagline {
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* --- scale readout ---------------------------------------------------- */
+
+.scale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 1.75rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-soft);
+}
+
+.scale__phase {
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.scale__weight {
+  font-size: 3.75rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.scale__hint {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}
+
+/* --- price label ------------------------------------------------------ */
+
+.result { width: 100%; }
+
+.label {
+  background: var(--card);
+  color: var(--card-ink);
+  border-radius: 1.25rem;
+  padding: 1.5rem 1.5rem 1.25rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.label__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.label__item {
+  font-size: 1.75rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge--gradeA { background: #d9f7e5; color: var(--accent-deep); }
+.badge--gradeB { background: #fdf0cd; color: #8a5a00; }
+.badge--gradeC { background: #fde2cf; color: var(--warn); }
+.badge--reject { background: #fadada; color: var(--reject); }
+.badge--packaged { background: #e2ecfb; color: #1f4f8f; }
+
+.label__basis {
+  margin: 0.5rem 0 0;
+  color: var(--card-dim);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.label__prices {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #d3ded6;
+  flex-wrap: wrap;
+}
+
+.price-was {
+  font-size: 1.25rem;
+  color: var(--card-dim);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-off {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--warn);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+}
+
+.price-now {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-left: auto;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.label__footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #d3ded6;
+}
+
+.label__footer img {
+  width: 92px;
+  height: 92px;
+  image-rendering: pixelated;
+}
+
+.label__code {
+  font-family: "SFMono-Regular", ui-monospace, monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  margin: 0;
+}
+
+.label__code-hint {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: var(--card-dim);
+}
+
+.label__detail {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--card-dim);
+}
+
+/* --- not-for-sale ----------------------------------------------------- */
+
+.label--reject { border-top: 5px solid var(--reject); }
+
+.label__reason {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px dashed #d3ded6;
+  color: var(--reject);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.label__reason-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--card-dim);
+  font-weight: 400;
+}
+
+/* --- connection error ------------------------------------------------- */
+
+.error {
+  margin-top: auto;
+  font-size: 0.85rem;
+  color: #ff9f97;
+}

@@ -1,0 +1,23 @@
+# app.yaml: The main configuration file for your Arduino App.
+# This file describes the application's metadata and properties.
+
+# The user-visible name of the application.
+name: VerdureAI
+
+# The icon for the application, can be an emoji or a short string.
+icon: 🥬
+
+description: >
+  Edge-AI checkout scale that assesses fresh-produce condition and packaged-goods
+  expiry at the point of sale and applies a proportional discount, to cut retail
+  food waste.
+
+# A list of network ports that the application exposes.
+# Example: [80, 443]
+ports: []
+
+# A list of bricks used by this application.
+bricks:
+  - arduino:camera_code_detection
+  - arduino:image_classification
+  - arduino:web_ui

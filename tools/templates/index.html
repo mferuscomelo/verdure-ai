@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head><title>VerdureAI - Barcode Scan Demo</title></head>
+<body>
+  <h1>VerdureAI - Barcode Scan Demo</h1>
+  <form method="post" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Pick an image</legend>
+      <label>Upload a photo: <input type="file" name="image" accept="image/*"></label>
+      <p>-- or --</p>
+      <label>Use a fixture:
+        <select name="fixture">
+          <option value="">(none)</option>
+          {% for f in fixtures %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
+        </select>
+      </label>
+    </fieldset>
+    <button type="submit">Scan</button>
+  </form>
+
+  {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+
+  {% if result %}
+    <hr>
+    <img src="data:image/jpeg;base64,{{ result.preview }}" style="max-width:480px;">
+    {% if result.barcode %}
+      <p>Decoded barcode: <strong>{{ result.barcode.value }}</strong> ({{ result.barcode.symbology }})</p>
+      {% if result.product.found %}
+        <p>Lookup source:
+          <strong>
+            {% if result.product.source == "cache" %}cache hit
+            {% elif result.product.source == "network" %}live network fetch
+            {% else %}network error{% endif %}
+          </strong>
+        </p>
+        <p>{{ result.product.name }} -- {{ result.product.brand }}</p>
+        {% if result.product.image_url %}<img src="{{ result.product.image_url }}" style="max-width:200px;">{% endif %}
+      {% else %}
+        <p>Barcode decoded but no matching product in Open Food Facts (source: {{ result.product.source }}).</p>
+      {% endif %}
+    {% else %}
+      <p>No barcode detected -- this item would route to the produce flow.</p>
+    {% endif %}
+  {% endif %}
+</body>
+</html>
