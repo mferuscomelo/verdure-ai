@@ -6,8 +6,8 @@ from pathlib import Path
 
 import cv2
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
-from code_detector import decode_first_barcode  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools.barcode_decode import decode_first_barcode  # noqa: E402
 
 FIXTURE_DIR = Path(__file__).parent / "barcodes"
 manifest = json.loads((FIXTURE_DIR / "manifest.json").read_text())

@@ -1,23 +1,30 @@
-from pathlib import Path
+from unittest.mock import Mock
 
-import cv2
+import numpy as np
 
 import router
-from code_detector import SimulatedCodeDetector
+from code_detector import CodeDetection, CodeDetector
 
-BARCODE_FIXTURE = Path(__file__).parent / "fixtures" / "barcodes" / "rot_000.png"
-NO_BARCODE_FIXTURE = Path(__file__).parent / "fixtures" / "best_by_dates" / "clean_iso.png"
+ANY_FRAME = np.zeros((8, 8, 3), dtype=np.uint8)
 
 
-def test_route_item_with_barcode_goes_to_packaged_flow():
-    image = cv2.imread(str(BARCODE_FIXTURE))
-    result = router.route_item(image, SimulatedCodeDetector())
+def _detector(detection=None):
+    detector = Mock(spec=CodeDetector)
+    detector.get_current_detection.return_value = detection
+    return detector
+
+
+def test_route_item_with_a_code_goes_to_the_packaged_flow():
+    detection = CodeDetection(value="070970474088", symbology="UPCA")
+
+    result = router.route_item(ANY_FRAME, _detector(detection))
+
     assert result.flow == "packaged"
     assert result.barcode == "070970474088"
 
 
-def test_route_item_without_barcode_goes_to_produce_flow():
-    image = cv2.imread(str(NO_BARCODE_FIXTURE))
-    result = router.route_item(image, SimulatedCodeDetector())
+def test_route_item_without_a_code_goes_to_the_produce_flow():
+    result = router.route_item(ANY_FRAME, _detector(None))
+
     assert result.flow == "produce"
     assert result.barcode is None

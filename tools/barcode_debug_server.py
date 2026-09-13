@@ -1,10 +1,10 @@
 """Focused Flask demo: pick an image, decode a barcode, look up the product.
 
 Not the full scale UI (no weight/pricing/QR -- those live in python/main.py,
-which only runs inside the App Lab container). Laptop-only tool, kept
+which runs inside the App Lab container). Laptop-only bench tool, kept
 outside python/ since it needs Flask/Jinja rather than the web_ui brick.
-Wires code_detector.py's pyzbar decode + product_lookup.py together so the
-barcode pipeline is visually verifiable end-to-end without the board.
+Wires barcode_decode.py + product_lookup.py together so the identification
+half of the packaged-goods flow can be checked against a photo on a desk.
 """
 import base64
 import sys
@@ -16,8 +16,9 @@ from flask import Flask, render_template, request
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "python"))
 
-from code_detector import decode_first_barcode  # noqa: E402
 from product_lookup import lookup_product  # noqa: E402
+
+from tools.barcode_decode import decode_first_barcode  # noqa: E402
 
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "barcodes"
 

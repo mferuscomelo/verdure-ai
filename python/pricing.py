@@ -6,8 +6,11 @@ Produce and packaged-goods flows each resolve their own discount tier from
 from dataclasses import dataclass
 
 from config import (
+    PACKAGED_DEFAULT_BASE_PRICE,
     PACKAGED_DEFAULT_DISCOUNT_PCT,
     PACKAGED_DISCOUNT_TIERS,
+    PACKAGED_PRICE_BY_BARCODE,
+    PACKAGED_PRICE_BY_CATEGORY,
     PRODUCE_DISCOUNT_BY_TIER,
     PRODUCE_PRICE_PER_KG,
 )
@@ -41,6 +44,20 @@ def price_produce(produce_type: str, tier: str, weight_kg: float) -> PriceResult
         for_sale=True,
         tier_label=tier,
     )
+
+
+def packaged_base_price(barcode: str | None, category: str | None = None) -> float:
+    """Shelf price for a packaged item: exact product, then category, then default."""
+    if barcode is not None and barcode in PACKAGED_PRICE_BY_BARCODE:
+        return PACKAGED_PRICE_BY_BARCODE[barcode]
+
+    if category:
+        haystack = category.lower()
+        for keyword, price in PACKAGED_PRICE_BY_CATEGORY:
+            if keyword in haystack:
+                return price
+
+    return PACKAGED_DEFAULT_BASE_PRICE
 
 
 def price_packaged(base_price: float, days_until_expiry: int) -> PriceResult:

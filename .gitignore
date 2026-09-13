@@ -8,3 +8,7 @@ models/*.eim
 python/data/product_cache.json
 # App Lab's per-app build/dependency cache (arduino-app-cli), not our own artifact.
 .cache/
+
+# Internal engineering notes -- not part of the public write-up (see README.md).
+CLAUDE.md
+.claude/

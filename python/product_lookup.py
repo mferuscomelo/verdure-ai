@@ -27,6 +27,7 @@ class ProductInfo:
     brand: str | None
     image_url: str | None
     source: str  # "cache" | "network" | "network_error"
+    category: str | None = None
 
 
 def _normalize_barcode(barcode: str) -> str:
@@ -51,7 +52,7 @@ def _write_cache(cache: dict) -> None:
 
 def _parse_off_response(payload: dict) -> dict:
     if payload.get("status") != 1:
-        return {"found": False, "name": None, "brand": None, "image_url": None}
+        return {"found": False, "name": None, "brand": None, "image_url": None, "category": None}
     product = payload.get("product", {})
     brands = product.get("brands")
     return {
@@ -59,6 +60,8 @@ def _parse_off_response(payload: dict) -> dict:
         "name": product.get("product_name") or None,
         "brand": brands.split(",")[0].strip() if brands else None,
         "image_url": product.get("image_front_url") or product.get("image_url") or None,
+        # Comma-separated tag path, broadest first -- pricing matches keywords against it.
+        "category": product.get("categories") or None,
     }
 
 

@@ -1,38 +1,38 @@
+from unittest.mock import Mock
+
 import bridge_client
 
 
-def test_simulated_bridge_ramps_up_before_stabilizing():
-    client = bridge_client.SimulatedBridgeClient(target_grams=90, step_grams=30, hold_reads=2)
-
-    first = client.read_weight()
-    assert first.grams == 30 and not first.stable
-
-    second = client.read_weight()
-    assert second.grams == 60 and not second.stable
+def _bridge_returning(grams, stable):
+    """A Bridge whose answer depends on the method name, the way the
+    sketch's two providers do."""
+    return Mock(call=Mock(side_effect=lambda method: {
+        "get_weight": grams, "is_stable": stable
+    }[method]))
 
 
-def test_simulated_bridge_reports_stable_once_target_reached():
-    client = bridge_client.SimulatedBridgeClient(target_grams=90, step_grams=30, hold_reads=2)
-    client.read_weight()
-    client.read_weight()
+def test_read_weight_maps_both_rpc_calls_into_one_reading(arduino):
+    arduino.bridge.call = _bridge_returning(182.5, True).call
 
-    third = client.read_weight()
-    assert third.grams == 90 and third.stable
+    reading = bridge_client.get_bridge_client().read_weight()
 
-
-def test_simulated_bridge_holds_stable_for_configured_read_count():
-    client = bridge_client.SimulatedBridgeClient(target_grams=90, step_grams=30, hold_reads=2)
-    for _ in range(3):
-        client.read_weight()
-
-    fourth = client.read_weight()
-    assert fourth.grams == 90 and fourth.stable
+    assert reading.grams == 182.5
+    assert reading.stable is True
 
 
-def test_simulated_bridge_resets_after_holding():
-    client = bridge_client.SimulatedBridgeClient(target_grams=90, step_grams=30, hold_reads=2)
-    for _ in range(4):
-        client.read_weight()
+def test_read_weight_reports_an_unsettled_scale(arduino):
+    arduino.bridge.call = _bridge_returning(64.0, False).call
 
-    fifth = client.read_weight()
-    assert fifth.grams == 30 and not fifth.stable
+    reading = bridge_client.get_bridge_client().read_weight()
+
+    assert reading.grams == 64.0
+    assert reading.stable is False
+
+
+def test_read_weight_asks_the_sketch_for_both_values(arduino):
+    bridge = _bridge_returning(10.0, False)
+    arduino.bridge.call = bridge.call
+
+    bridge_client.get_bridge_client().read_weight()
+
+    assert [c.args[0] for c in bridge.call.call_args_list] == ["get_weight", "is_stable"]

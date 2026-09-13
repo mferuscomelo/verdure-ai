@@ -19,4 +19,5 @@ ports: []
 # A list of bricks used by this application.
 bricks:
   - arduino:camera_code_detection
+  - arduino:image_classification
   - arduino:web_ui

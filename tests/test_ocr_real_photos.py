@@ -10,8 +10,9 @@ from pathlib import Path
 import cv2
 import pytest
 
-from code_detector import decode_first_barcode
 from ocr import read_best_by_date
+
+from tools.barcode_decode import decode_first_barcode
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "real_photos"
 MANIFEST = json.loads((FIXTURE_DIR / "manifest.json").read_text())

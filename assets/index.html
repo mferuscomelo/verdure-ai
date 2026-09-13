@@ -7,10 +7,22 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <div id="phase">Waiting for item</div>
-    <div id="weight">0 g</div>
-    <div id="result"></div>
-    <div id="error-container" class="error-message" style="display: none"></div>
+    <main class="kiosk">
+      <header class="brand">
+        <span class="brand__mark">VerdureAI</span>
+        <span class="brand__tagline">Fresh-produce checkout</span>
+      </header>
+
+      <section class="scale">
+        <div id="phase" class="scale__phase">Waiting for item</div>
+        <div id="weight" class="scale__weight">0 g</div>
+        <div id="hint" class="scale__hint">Place an item on the scale</div>
+      </section>
+
+      <section id="result" class="result" hidden></section>
+
+      <div id="error-container" class="error" hidden></div>
+    </main>
 
     <script src="libs/socket.io.min.js"></script>
     <script src="libs/arduino.js"></script>
