@@ -1,5 +1,7 @@
 # VerdureAI
 
+![VerdureAI cover](docs/images/cover.png)
+
 An edge-AI checkout scale that grades fresh produce and reads packaged-goods expiry dates
 at the point of sale, applying a proportional discount to items that are still good to eat
 but wouldn't otherwise sell, built on the Arduino UNO Q for the
